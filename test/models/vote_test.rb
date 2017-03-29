@@ -40,6 +40,7 @@ class VoteTest < ActiveSupport::TestCase
       vote1.save!
       vote2 = Vote.new(user: user1, piece: piece1)
       vote2.valid?.must_equal false
+      vote2.errors.messages.must_include :user
     end
   end
 end
