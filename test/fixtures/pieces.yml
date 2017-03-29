@@ -1,15 +1,15 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: MyString
-  creator: MyString
-  description: MyString
-  publication_date: 2017-03-29
-  category: MyString
+mariner:
+  title: Mariner
+  creator: Cult of Luna
+  description: Collaboration w/ Julie Christmas
+  publication_date: 2016-04-08
+  category: Album
 
-two:
-  title: MyString
-  creator: MyString
-  description: MyString
-  publication_date: 2017-03-29
-  category: MyString
+thrill:
+  title: Can't Buy a Thrill
+  creator: Steely Dan
+  description: Dark, cryptic lyrics and catchy 70s hooks!
+  publication_date: 1972-11-01
+  category: Album
