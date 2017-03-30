@@ -64,11 +64,11 @@ class PieceTest < ActiveSupport::TestCase
     end
   end
 
-  describe "votes_count" do
+  describe "vote_count" do
     it "defaults to 0" do
       piece = Piece.create!(title: "test title", category: "movie")
-      piece.must_respond_to :votes_count
-      piece.votes_count.must_equal 0
+      piece.must_respond_to :vote_count
+      piece.vote_count.must_equal 0
     end
 
     it "tracks the number of votes" do
@@ -77,7 +77,8 @@ class PieceTest < ActiveSupport::TestCase
         user = User.create!(username: "user#{i}")
         Vote.create!(user: user, piece: piece)
       end
-      piece.votes_count.must_equal 4
+      piece.vote_count.must_equal 4
+      Piece.find(piece.id).vote_count.must_equal 4
     end
   end
 
@@ -113,8 +114,8 @@ class PieceTest < ActiveSupport::TestCase
       movies = Piece.top_ten("movie")
       previous_vote_count = 100
       movies.each do |movie|
-        movie.votes_count.must_be :<=, previous_vote_count
-        previous_vote_count = movie.votes_count
+        movie.vote_count.must_be :<=, previous_vote_count
+        previous_vote_count = movie.vote_count
       end
     end
 

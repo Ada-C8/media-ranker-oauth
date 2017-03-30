@@ -21,6 +21,6 @@ class Piece < ApplicationRecord
   end
 
   def self.top_ten(category)
-    where(category: category).order(votes_count: :desc).limit(10)
+    where(category: category).order(vote_count: :desc).limit(10)
   end
 end

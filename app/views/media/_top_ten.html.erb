@@ -4,7 +4,7 @@
     <% data.each do |datum| %>
       <li>
         <h4><%= link_to datum.title, media_path(datum) %></h4>
-        <p>Rank <%= datum.votes.count %></p>
+        <p><%= datum.vote_count %> votes</p>
       </li>
     <% end %>
   </ul>

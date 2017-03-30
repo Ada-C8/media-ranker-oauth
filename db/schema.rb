@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20170330073412) do
     t.string   "category"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.integer  "votes_count",      default: 0
+    t.integer  "vote_count",       default: 0
   end
 
   create_table "users", force: :cascade do |t|

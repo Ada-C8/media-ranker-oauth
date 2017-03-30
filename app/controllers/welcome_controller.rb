@@ -3,6 +3,7 @@ class WelcomeController < ApplicationController
     @albums = Piece.best_albums
     @books = Piece.best_books
     @movies = Piece.best_movies
+    @best_piece = Piece.order(vote_count: :desc).first
   end
 
   def login_form
