@@ -7,4 +7,20 @@ class Piece < ApplicationRecord
 
   validates :title, presence: true,
                     uniqueness: { scope: :category }
+
+  def self.best_albums
+    top_ten("album")
+  end
+
+  def self.best_books
+    top_ten("book")
+  end
+
+  def self.best_movies
+    top_ten("movie")
+  end
+
+  def self.top_ten(category)
+    where(category: category).order(votes_count: :desc).limit(10)
+  end
 end

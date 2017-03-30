@@ -63,4 +63,73 @@ class PieceTest < ActiveSupport::TestCase
       piece2.valid?.must_equal true
     end
   end
+
+  describe "votes_count" do
+    it "defaults to 0" do
+      piece = Piece.create!(title: "test title", category: "movie")
+      piece.must_respond_to :votes_count
+      piece.votes_count.must_equal 0
+    end
+
+    it "tracks the number of votes" do
+      piece = Piece.create!(title: "test title", category: "movie")
+      4.times do |i|
+        user = User.create!(username: "user#{i}")
+        Vote.create!(user: user, piece: piece)
+      end
+      piece.votes_count.must_equal 4
+    end
+  end
+
+  describe "top_ten" do
+    before do
+      # TODO DPR: This runs pretty slow. Fixtures?
+      # Create users to do the voting
+      test_users = []
+      20.times do |i|
+        test_users << User.create!(username: "user#{i}")
+      end
+
+      # Create media to vote upon
+      8.times do |i|
+        piece = Piece.create!(category: "movie", title: "test movie #{i}")
+        vote_count = rand(test_users.length)
+        test_users.first(vote_count).each do |user|
+          Vote.create!(piece: piece, user: user)
+        end
+      end
+    end
+
+    it "returns a list of media of the correct category" do
+      movies = Piece.top_ten("movie")
+      movies.length.must_equal 8
+      movies.each do |movie|
+        movie.must_be_kind_of Piece
+        movie.category.must_equal "movie"
+      end
+    end
+
+    it "orders media by vote count" do
+      movies = Piece.top_ten("movie")
+      previous_vote_count = 100
+      movies.each do |movie|
+        movie.votes_count.must_be :<=, previous_vote_count
+        previous_vote_count = movie.votes_count
+      end
+    end
+
+    it "returns at most 10 items" do
+      movies = Piece.top_ten("movie")
+      movies.length.must_equal 8
+
+      Piece.create(title: "phase 2 test movie 1", category: "movie")
+      Piece.top_ten("movie").length.must_equal 9
+
+      Piece.create(title: "phase 2 test movie 2", category: "movie")
+      Piece.top_ten("movie").length.must_equal 10
+
+      Piece.create(title: "phase 2 test movie 3", category: "movie")
+      Piece.top_ten("movie").length.must_equal 10
+    end
+  end
 end
