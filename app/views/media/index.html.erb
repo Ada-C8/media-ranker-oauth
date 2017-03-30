@@ -1,0 +1,21 @@
+<%= link_to "Add #{@media_category}", media_path(form: true), class: "button" %>
+<section class="media-table">
+  <table>
+    <thead>
+      <tr>
+        <th>Votes</th>
+        <th>Name</th>
+        <th>Upvote</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @media.each do |piece| %>
+        <tr>
+          <td><%= piece.vote_count %></td>
+          <td><%= link_to piece.title, media_path(piece) %></td>
+          <td><%= link_to "Upvote", "#", class: "button" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>
