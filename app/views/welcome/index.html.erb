@@ -1,1 +1,18 @@
-<h2>Media Ranker Welcome Index</h2>
+<%= render partial: "media/top_ten", locals: {
+  media_type: "Movies",
+  collection_path: movies_path,
+  data: @movies
+}
+%>
+<%= render partial: "media/top_ten", locals: {
+  media_type: "Books",
+  collection_path: books_path,
+  data: @books
+}
+%>
+<%= render partial: "media/top_ten", locals: {
+  media_type: "Albums",
+  collection_path: albums_path,
+  data: @albums
+}
+%>

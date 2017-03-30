@@ -1,0 +1,12 @@
+<section class="top-ten columns large-4 small-12">
+  <h3>Top <%= media_type %></h3>
+  <ul>
+    <% data.each do |datum| %>
+      <li>
+        <h4><%= link_to datum.title, media_path(datum) %></h4>
+        <p>Rank <%= datum.votes.count %></p>
+      </li>
+    <% end %>
+  </ul>
+  <%= link_to "View More #{media_type}", collection_path %>
+</section>

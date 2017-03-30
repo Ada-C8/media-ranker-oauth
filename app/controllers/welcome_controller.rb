@@ -1,5 +1,8 @@
 class WelcomeController < ApplicationController
   def index
+    @albums = Piece.best_albums
+    @books = Piece.best_books
+    @movies = Piece.best_movies
   end
 
   def login_form

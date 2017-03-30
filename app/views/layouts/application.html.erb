@@ -11,6 +11,8 @@
 <body>
   <header class="page-header row">
     <h1 class="columns large-10 small-12"><%= link_to "Media Ranker", root_path %> <small>Ranking the Best of Everything</small></h1>
+
+    <!-- TODO DPR: this looks really silly when the screen size is small -->
     <div class="columns large-2 small-12">
       <% if @user %>
         <p>Logged in as <%= @user.username %></p>
@@ -21,6 +23,7 @@
       <% end %>
     </div>
   </header>
+
   <% if flash[:error_text] or flash[:messages] %>
     <section class="error-message row">
       <h3>A problem occurred: <%= flash[:error_text] %></h3>
@@ -35,6 +38,7 @@
       <% end %>
     </section>
   <% end %>
+
   <main class="row">
     <%= yield %>
   </main>
