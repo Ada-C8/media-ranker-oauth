@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   get '/logout', to: 'welcome#logout', as: 'logout'
 
   resources :albums
+  post '/albums/:id/upvote', to: 'albums#upvote', as: 'upvote_album'
   resources :books
+  post '/books/:id/upvote', to: 'books#upvote', as: 'upvote_book'
   resources :movies
+  post '/movies/:id/upvote', to: 'movies#upvote', as: 'upvote_movie'
 end

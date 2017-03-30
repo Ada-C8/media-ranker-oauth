@@ -1,0 +1,13 @@
+<article class="media-details">
+  <h3><%= @media.title %></h3>
+  <p>Created by: <%= @media.creator %></p>
+  <p>Published: <%= @media.publication_date %></p>
+  <p><%= @media.vote_count %> votes</p>
+  <p><%= @media.description %></p>
+  <section>
+    <%= link_to "Back to #{@media_category} list", media_path, class: "button" %>
+    <%= link_to "Edit", media_path(@media, form: true), class: "button" %>
+    <%= link_to "Upvote", upvote_path(@media), class: "button", method: :post %>
+    <%= link_to "Delete", media_path(@media), class: "alert button", method: "delete", data: { confirm: "Are you sure?" } %>
+  </section>
+</article>

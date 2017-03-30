@@ -20,6 +20,11 @@ class MediaController < ApplicationController
   end
 
   def show
+    @media = Piece.find(params[:id])
+    if @media.category != @media_category
+      # TODO DPR: do something reasonable
+      raise ArgumentError "Wrong media type for this controller!"
+    end
   end
 
   def edit
@@ -29,6 +34,29 @@ class MediaController < ApplicationController
   end
 
   def delete
+  end
+
+  def upvote
+    if @user
+      piece = Piece.find_by(id: params[:id])
+      if piece
+        vote = Vote.new(user: @user, piece: piece)
+        if vote.save
+
+        else
+          flash[:error_text] = "Could not upvote"
+          flash[:messages] = vote.errors.messages
+        end
+      else
+        flash[:error_text] = "No media found with ID #{params[:id]}"
+      end
+    else
+      flash[:error_text] = "You must log in to do that"
+    end
+
+    # Refresh the page to show either the updated vote count
+    # or the error message
+    redirect_back fallback_location: media_path
   end
 
 private

@@ -1,10 +1,10 @@
-<%= link_to "Add #{@media_category}", media_path(form: true), class: "button" %>
 <section class="media-table">
   <table>
     <thead>
       <tr>
         <th>Votes</th>
         <th>Name</th>
+        <th>Created By</th>
         <th>Upvote</th>
       </tr>
     </thead>
@@ -13,9 +13,12 @@
         <tr>
           <td><%= piece.vote_count %></td>
           <td><%= link_to piece.title, media_path(piece) %></td>
-          <td><%= link_to "Upvote", "#", class: "button" %></td>
+          <td><%= piece.creator %></td>
+          <td><%= link_to "Upvote", upvote_path(piece), class: "button", method: :post %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
+  <%= link_to "View all media", root_path, class: "button" %>
+  <%= link_to "Add #{@media_category}", media_path(form: true), class: "button" %>
 </section>
