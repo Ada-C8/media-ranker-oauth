@@ -1,0 +1,2 @@
+class BooksController < MediaController
+end

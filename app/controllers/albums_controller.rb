@@ -1,0 +1,2 @@
+class AlbumsController < MediaController
+end

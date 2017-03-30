@@ -20,6 +20,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   describe "validations" do
+    it "requires a username" do
+      user = User.new
+      user.valid?.must_equal false
+      user.errors.messages.must_include :username
+    end
+
     it "requires a unique username" do
       username = "test username"
       user1 = User.new(username: username)
@@ -32,5 +38,7 @@ class UserTest < ActiveSupport::TestCase
       result.must_equal false
       user2.errors.messages.must_include :username
     end
+
+
   end
 end
