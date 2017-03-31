@@ -1,5 +1,6 @@
 class MediaController < ApplicationController
   before_action :media_category
+  before_action :require_piece, except: [:index, :new, :create]
 
   def index
     @media = Piece.where(category: @media_category)
@@ -23,20 +24,29 @@ class MediaController < ApplicationController
   end
 
   def show
-    @media = Piece.find(params[:id])
-    if @media.category != @media_category
-      # TODO DPR: do something reasonable
-      raise ArgumentError "Wrong media type for this controller!"
-    end
   end
 
   def edit
   end
 
   def update
+    @piece.update_attributes(media_params)
+    if @piece.save
+      flash[:status] = :success
+      flash[:result_text] = "Successfully updated #{@media_category} #{@piece.id}"
+      redirect_to media_path
+    else
+      flash[:status] = :failure
+      flash[:result_text] = "Could not update #{@media_category}"
+      flash[:messages] = @piece.errors.messages
+    end
   end
 
-  def delete
+  def destroy
+    @piece.destroy
+    flash[:status] = :success
+    flash[:result_text] = "Successfully destroyed #{@media_category} #{@piece.id}"
+    redirect_to media_path
   end
 
   def upvote
@@ -44,18 +54,13 @@ class MediaController < ApplicationController
     # Something tragically beautiful about the whole thing
     flash[:status] = :failure
     if @user
-      piece = Piece.find_by(id: params[:id])
-      if piece
-        vote = Vote.new(user: @user, piece: piece)
-        if vote.save
-          flash[:status] = :success
-          flash[:result_text] = "Successfully upvoted!"
-        else
-          flash[:result_text] = "Could not upvote"
-          flash[:messages] = vote.errors.messages
-        end
+      vote = Vote.new(user: @user, piece: @piece)
+      if vote.save
+        flash[:status] = :success
+        flash[:result_text] = "Successfully upvoted!"
       else
-        flash[:result_text] = "No media found with ID #{params[:id]}"
+        flash[:result_text] = "Could not upvote"
+        flash[:messages] = vote.errors.messages
       end
     else
       flash[:result_text] = "You must log in to do that"
@@ -68,8 +73,17 @@ class MediaController < ApplicationController
 
 private
   def media_params
-    params.require(piece).permit(:title, :category, :creator, :description, :publication_date)
+    params.require(:piece).permit(:title, :category, :creator, :description, :publication_year)
   end
 
-
+  def require_piece
+    @piece = Piece.find_by(id: params[:id])
+    if !@piece
+      # TODO DPR 404
+    end
+    if @piece.category != @media_category
+      # TODO DPR: do something reasonable
+      raise ArgumentError "Wrong media type for this controller!"
+    end
+  end
 end

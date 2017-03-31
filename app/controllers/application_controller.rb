@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     end
 
     if category == "album"
-      if piece
+      if piece and piece.id
         if form
           return edit_album_path(piece)
         else
@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
       end
 
     elsif category == "book"
-      if piece
+      if piece and piece.id
         if form
           return edit_book_path(piece)
         else
@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
       end
 
     elsif category == "movie"
-      if piece
+      if piece and piece.id
         if form
           return edit_movie_path(piece)
         else

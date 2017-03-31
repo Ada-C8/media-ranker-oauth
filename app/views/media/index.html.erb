@@ -1,11 +1,13 @@
+<h3>List of <%= @media_category.pluralize.capitalize %></h3>
 <section class="media-table">
   <table>
     <thead>
       <tr>
-        <th>Votes</th>
-        <th>Name</th>
+        <th width=80>Votes</th>
+        <th>Title</th>
         <th>Created By</th>
-        <th>Upvote</th>
+        <th width=100>Published</th>
+        <th width=100>Upvote</th>
       </tr>
     </thead>
     <tbody>
@@ -14,11 +16,12 @@
           <td><%= piece.vote_count %></td>
           <td><%= link_to piece.title, media_path(piece) %></td>
           <td><%= piece.creator %></td>
-          <td><%= link_to "Upvote", upvote_path(piece), class: "button", method: :post %></td>
+          <td><%= piece.publication_year %></td>
+          <td><%= link_to "Upvote", upvote_path(piece), class: "button upvote", method: :post %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
   <%= link_to "View all media", root_path, class: "button" %>
-  <%= link_to "Add #{@media_category}", media_path(form: true), class: "button" %>
+  <%= link_to "Add a new #{@media_category}", media_path(form: true), class: "button" %>
 </section>

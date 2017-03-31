@@ -1,0 +1,19 @@
+<section>
+  <%= form_for @piece, url: media_path(@piece) do |f| %>
+    <%= f.hidden_field :category, value: @media_category %>
+
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+
+    <%= f.label :creator %>
+    <%= f.text_field :creator %>
+
+    <%= f.label :publication_year %>
+    <%= f.text_field :publication_year %>
+
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+
+    <%= f.submit %>
+  <% end %>
+</section>
