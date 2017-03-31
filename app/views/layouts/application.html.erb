@@ -24,9 +24,9 @@
     </div>
   </header>
 
-  <% if flash[:error_text] or flash[:messages] %>
-    <section class="error-message row">
-      <h3>A problem occurred: <%= flash[:error_text] %></h3>
+  <% if flash[:result_text] or flash[:messages] %>
+    <section class="row status <%= flash[:status] %>">
+      <h3><%= flash[:status] == :failure ? "A problem occurred: " : "" %><%= flash[:result_text] %></h3>
       <% if flash[:messages] %>
         <ul>
           <% flash[:messages].each do |name, problems| %>

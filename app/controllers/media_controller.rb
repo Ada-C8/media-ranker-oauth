@@ -12,9 +12,12 @@ class MediaController < ApplicationController
   def create
     piece = Piece.new(media_params)
     if piece.save
+      flash[:status] = :success
+      flash[:result_text] = "Successfully created #{@media_category} #{piece.id}"
       redirect_to media_path
     else
-      flash[:error_text] = "Could not create #{@media_category}"
+      flash[:status] = :failure
+      flash[:result_text] = "Could not create #{@media_category}"
       flash[:messages] = piece.errors.messages
     end
   end
@@ -37,21 +40,25 @@ class MediaController < ApplicationController
   end
 
   def upvote
+    # Most of these varied paths end in failure
+    # Something tragically beautiful about the whole thing
+    flash[:status] = :failure
     if @user
       piece = Piece.find_by(id: params[:id])
       if piece
         vote = Vote.new(user: @user, piece: piece)
         if vote.save
-
+          flash[:status] = :success
+          flash[:result_text] = "Successfully upvoted!"
         else
-          flash[:error_text] = "Could not upvote"
+          flash[:result_text] = "Could not upvote"
           flash[:messages] = vote.errors.messages
         end
       else
-        flash[:error_text] = "No media found with ID #{params[:id]}"
+        flash[:result_text] = "No media found with ID #{params[:id]}"
       end
     else
-      flash[:error_text] = "You must log in to do that"
+      flash[:result_text] = "You must log in to do that"
     end
 
     # Refresh the page to show either the updated vote count

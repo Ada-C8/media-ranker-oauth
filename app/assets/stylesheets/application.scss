@@ -29,6 +29,9 @@
    }
  }
 
- .error-message {
-   color: #C70039
+ .status.failure {
+   color: #C70039;
+ }
+ .status.success {
+   color: #359b18;
  }
