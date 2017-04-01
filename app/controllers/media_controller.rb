@@ -3,7 +3,7 @@ class MediaController < ApplicationController
   before_action :require_piece, except: [:index, :new, :create]
 
   def index
-    @media = Piece.where(category: @media_category)
+    @media = Piece.where(category: @media_category).order(vote_count: :desc)
   end
 
   def new
@@ -24,6 +24,7 @@ class MediaController < ApplicationController
   end
 
   def show
+    @votes = @piece.votes.order(created_at: :desc)
   end
 
   def edit
@@ -53,8 +54,8 @@ class MediaController < ApplicationController
     # Most of these varied paths end in failure
     # Something tragically beautiful about the whole thing
     flash[:status] = :failure
-    if @user
-      vote = Vote.new(user: @user, piece: @piece)
+    if @login_user
+      vote = Vote.new(user: @login_user, piece: @piece)
       if vote.save
         flash[:status] = :success
         flash[:result_text] = "Successfully upvoted!"

@@ -14,8 +14,8 @@
 
     <!-- TODO DPR: this looks really silly when the screen size is small -->
     <div class="columns large-2 small-12">
-      <% if @user %>
-        <p>Logged in as <%= @user.username %></p>
+      <% if @login_user %>
+        <p>Logged in as <%= link_to @login_user.username, user_path(@login_user) %></p>
         <%= link_to "Log Out", logout_path, class: "button log-out" %>
       <% else %>
         <p>Not logged in</p>

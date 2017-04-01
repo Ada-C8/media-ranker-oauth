@@ -2,5 +2,20 @@
 <%= form_tag do %>
   <%= label_tag(:username, "Username") %>
   <%= text_field_tag(:username) %>
-  <%= submit_tag("Log In") %>
+  <%= submit_tag("Log In", class: "button") %>
 <% end %>
+
+<article>
+  <h4>A note about logging in</h4>
+  <p>
+    There is no password field. In fact, there is no indication whatsoever
+    that you are who you say you are. There's nothing special about users -
+    username is just another piece of data that the user entered and we have to keep
+    track of.
+  </p>
+
+  <p>
+    We'll learn more about security and authentication in the next couple weeks.
+    For now, don't worry about it beyond what you can see here.
+  </p>
+</article>

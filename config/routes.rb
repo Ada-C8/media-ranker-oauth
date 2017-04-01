@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   post '/books/:id/upvote', to: 'books#upvote', as: 'upvote_book'
   resources :movies
   post '/movies/:id/upvote', to: 'movies#upvote', as: 'upvote_movie'
+
+  resources :users, only: [:index, :show]
 end

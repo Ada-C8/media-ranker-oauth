@@ -1,8 +1,7 @@
-<article class="media-details">
+<article class="media-details columns large-6 small-12">
   <h3><%= @piece.title %></h3>
   <p>Created by: <%= @piece.creator %></p>
   <p>Published: <%= @piece.publication_year %></p>
-  <p><%= @piece.vote_count %> votes</p>
   <p><%= @piece.description %></p>
   <section>
     <%= link_to "Back to #{@media_category} list", media_path, class: "button" %>
@@ -10,4 +9,23 @@
     <%= link_to "Upvote", upvote_path(@piece), class: "button", method: :post %>
     <%= link_to "Delete", media_path(@piece), class: "alert button", method: "delete", data: { confirm: "Are you sure?" } %>
   </section>
+</article>
+
+<article class="voting-users columns large-6 small-12">
+  <h3><%= @votes.count %> Votes for this <%= @media_category.capitalize %></h3>
+  <table>
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @votes.each do |vote| %>
+      <tr>
+        <td><%= link_to vote.user.username, user_path(vote.user) %></td>
+        <td><%= render_date vote.created_at %></td>
+      </li>
+    <% end %>
+  </ul>
 </article>
