@@ -74,6 +74,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :upvote_path
 
+  def render_404
+    # DPR: supposedly this will actually render a 404 page in production
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
 private
   def find_user
     if session[:user_id]

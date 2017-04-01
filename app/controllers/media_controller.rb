@@ -78,12 +78,8 @@ private
 
   def require_piece
     @piece = Piece.find_by(id: params[:id])
-    if !@piece
-      # TODO DPR 404
-    end
-    if @piece.category != @media_category
-      # TODO DPR: do something reasonable
-      raise ArgumentError "Wrong media type for this controller!"
-    end
+    render_404 unless @piece
+
+    render_404 unless @piece.category == @media_category
   end
 end
