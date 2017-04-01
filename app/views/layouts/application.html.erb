@@ -10,16 +10,19 @@
 
 <body>
   <header class="page-header row">
-    <h1 class="columns large-10 small-12"><%= link_to "Media Ranker", root_path %> <small>Ranking the Best of Everything</small></h1>
+    <h2 class="columns large-9 small-12">
+      <%= link_to "Media Ranker", root_path %>
+      <small>Ranking the Best of Everything</small>
+    </h2>
 
     <!-- TODO DPR: this looks really silly when the screen size is small -->
-    <div class="columns large-2 small-12">
+    <div class="columns large-3 small-12">
       <% if @login_user %>
-        <p>Logged in as <%= link_to @login_user.username, user_path(@login_user) %></p>
-        <%= link_to "Log Out", logout_path, class: "button log-out" %>
+        <p class="text-right">Logged in as <%= link_to @login_user.username, user_path(@login_user) %></p>
+        <%= link_to "Log Out", logout_path, class: "button float-right" %>
       <% else %>
-        <p>Not logged in</p>
-        <%= link_to "Log In", login_path, class: "button log-in" %>
+        <p class="text-right">Not logged in</p>
+        <%= link_to "Log In", login_path, class: "button float-right" %>
       <% end %>
     </div>
   </header>
