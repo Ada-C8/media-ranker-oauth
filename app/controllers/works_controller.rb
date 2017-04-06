@@ -1,54 +1,54 @@
 class WorksController < ApplicationController
   # before_action :media_category
-  before_action :require_piece, except: [:index, :new, :create]
+  before_action :require_work, except: [:index, :new, :create]
 
   def index
     @media_category = params[:category]
-    @media = Piece.by_category(params[:category]).order(vote_count: :desc)
+    @media = Work.by_category(params[:category]).order(vote_count: :desc)
     render :index
   end
 
   def new
-    @piece = Piece.new(category: @media_category)
+    @work = Work.new(category: @media_category)
   end
 
   def create
-    piece = Piece.new(media_params)
-    if piece.save
+    work = Work.new(media_params)
+    if work.save
       flash[:status] = :success
-      flash[:result_text] = "Successfully created #{@media_category} #{piece.id}"
+      flash[:result_text] = "Successfully created #{@media_category} #{work.id}"
       redirect_to media_path
     else
       flash[:status] = :failure
       flash[:result_text] = "Could not create #{@media_category}"
-      flash[:messages] = piece.errors.messages
+      flash[:messages] = work.errors.messages
     end
   end
 
   def show
-    @votes = @piece.votes.order(created_at: :desc)
+    @votes = @work.votes.order(created_at: :desc)
   end
 
   def edit
   end
 
   def update
-    @piece.update_attributes(media_params)
-    if @piece.save
+    @work.update_attributes(media_params)
+    if @work.save
       flash[:status] = :success
-      flash[:result_text] = "Successfully updated #{@media_category} #{@piece.id}"
+      flash[:result_text] = "Successfully updated #{@media_category} #{@work.id}"
       redirect_to media_path
     else
       flash[:status] = :failure
       flash[:result_text] = "Could not update #{@media_category}"
-      flash[:messages] = @piece.errors.messages
+      flash[:messages] = @work.errors.messages
     end
   end
 
   def destroy
-    @piece.destroy
+    @work.destroy
     flash[:status] = :success
-    flash[:result_text] = "Successfully destroyed #{@media_category} #{@piece.id}"
+    flash[:result_text] = "Successfully destroyed #{@media_category} #{@work.id}"
     redirect_to media_path
   end
 
@@ -57,7 +57,7 @@ class WorksController < ApplicationController
     # Something tragically beautiful about the whole thing
     flash[:status] = :failure
     if @login_user
-      vote = Vote.new(user: @login_user, piece: @piece)
+      vote = Vote.new(user: @login_user, work: @work)
       if vote.save
         flash[:status] = :success
         flash[:result_text] = "Successfully upvoted!"
@@ -76,12 +76,12 @@ class WorksController < ApplicationController
 
 private
   def media_params
-    params.require(:piece).permit(:title, :category, :creator, :description, :publication_year)
+    params.require(:work).permit(:title, :category, :creator, :description, :publication_year)
   end
 
-  def require_piece
-    @piece = Piece.find_by(id: params[:id])
-    @media_category = @piece.category.downcase.pluralize
-    render_404 unless @piece
+  def require_work
+    @work = Work.find_by(id: params[:id])
+    @media_category = @work.category.downcase.pluralize
+    render_404 unless @work
   end
 end

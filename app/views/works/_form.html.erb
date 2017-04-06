@@ -1,5 +1,5 @@
 <section>
-  <%= form_for @piece, url: work_path(@piece) do |f| %>
+  <%= form_for @work, url: work_path(@work) do |f| %>
     <%= f.hidden_field :category, value: @media_category %>
 
     <%= f.label :title %>

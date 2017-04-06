@@ -15,10 +15,10 @@
   <tbody>
     <% @user.votes.each do |vote| %>
       <tr>
-        <td><%= link_to vote.piece.title, media_path(vote.piece) %></td>
-        <td><%= vote.piece.creator %></td>
-        <td><%= vote.piece.publication_year %></td>
-        <td><%= vote.piece.category.capitalize %></td>
+        <td><%= link_to vote.work.title, media_path(vote.work) %></td>
+        <td><%= vote.work.creator %></td>
+        <td><%= vote.work.publication_year %></td>
+        <td><%= vote.work.category.capitalize %></td>
         <td><%= render_date vote.created_at %></td>
       </tr>
     <% end %>

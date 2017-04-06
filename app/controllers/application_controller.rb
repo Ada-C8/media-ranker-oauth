@@ -4,11 +4,11 @@ class ApplicationController < ActionController::Base
   before_action :find_user
 
   # DPR: Hmmmm, mixing these two syntaxes seems wrong, but it's the only
-  # way I could figure to get the optional positional argument (piece)
+  # way I could figure to get the optional positional argument (work)
   # to play nicely with the optional named arguments (category and form)
-  def media_path(piece=nil, category: nil, form: false)
-    if !category and piece
-      category = piece.category
+  def media_path(work=nil, category: nil, form: false)
+    if !category and work
+      category = work.category
     elsif !category and @media_category
       category = @media_category
     else
@@ -16,11 +16,11 @@ class ApplicationController < ActionController::Base
     end
 
     if category == "album"
-      if piece and piece.id
+      if work and work.id
         if form
-          return edit_album_path(piece)
+          return edit_album_path(work)
         else
-          return album_path(piece)
+          return album_path(work)
         end
       else
         if form
@@ -31,11 +31,11 @@ class ApplicationController < ActionController::Base
       end
 
     elsif category == "book"
-      if piece and piece.id
+      if work and work.id
         if form
-          return edit_book_path(piece)
+          return edit_book_path(work)
         else
-          return book_path(piece)
+          return book_path(work)
         end
       else
         if form
@@ -46,11 +46,11 @@ class ApplicationController < ActionController::Base
       end
 
     elsif category == "movie"
-      if piece and piece.id
+      if work and work.id
         if form
-          return edit_movie_path(piece)
+          return edit_movie_path(work)
         else
-          return movie_path(piece)
+          return movie_path(work)
         end
       else
         if form
@@ -63,13 +63,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :media_path
 
-  # def upvote_path(piece)
-  #   if piece.category == "album"
-  #     upvote_album_path(piece)
-  #   elsif piece.category == "book"
-  #     upvote_book_path(piece)
-  #   elsif piece.category == "movie"
-  #     upvote_movie_path(piece)
+  # def upvote_path(work)
+  #   if work.category == "album"
+  #     upvote_album_path(work)
+  #   elsif work.category == "book"
+  #     upvote_book_path(work)
+  #   elsif work.category == "movie"
+  #     upvote_movie_path(work)
   #   end
   # end
   # helper_method :upvote_path

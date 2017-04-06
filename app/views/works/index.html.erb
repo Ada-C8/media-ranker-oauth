@@ -11,13 +11,13 @@
       </tr>
     </thead>
     <tbody>
-      <% @media.each do |piece| %>
+      <% @media.each do |work| %>
         <tr>
-          <td><%= piece.vote_count %></td>
-          <td><%= link_to piece.title, work_path(piece) %></td>
-          <td><%= piece.creator %></td>
-          <td><%= piece.publication_year %></td>
-          <td><%= link_to "Upvote", upvote_path(piece), class: "button upvote", method: :post %></td>
+          <td><%= work.vote_count %></td>
+          <td><%= link_to work.title, work_path(work) %></td>
+          <td><%= work.creator %></td>
+          <td><%= work.publication_year %></td>
+          <td><%= link_to "Upvote", upvote_path(work), class: "button upvote", method: :post %></td>
         </tr>
       <% end %>
     </tbody>

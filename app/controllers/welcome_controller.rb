@@ -1,9 +1,9 @@
 class WelcomeController < ApplicationController
   def index
-    @albums = Piece.best_albums
-    @books = Piece.best_books
-    @movies = Piece.best_movies
-    @best_piece = Piece.order(vote_count: :desc).first
+    @albums = Work.best_albums
+    @books = Work.best_books
+    @movies = Work.best_movies
+    @best_work = Work.order(vote_count: :desc).first
   end
 
   def login_form
