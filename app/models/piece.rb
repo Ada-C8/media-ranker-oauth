@@ -8,6 +8,11 @@ class Piece < ApplicationRecord
   validates :title, presence: true,
                     uniqueness: { scope: :category }
 
+  def self.by_category(category)
+    category = category.singularize.downcase
+    self.where(category: category)
+  end
+
   def self.best_albums
     top_ten("album")
   end

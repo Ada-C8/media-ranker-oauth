@@ -4,10 +4,10 @@
   <p>Published: <%= @piece.publication_year %></p>
   <p><%= @piece.description %></p>
   <section>
-    <%= link_to "Back to #{@media_category} list", media_path, class: "button" %>
-    <%= link_to "Edit", media_path(@piece, form: true), class: "button" %>
+    <%= link_to "Back to #{@media_category} list", works_path(@media_category), class: "button" %>
+    <%= link_to "Edit", edit_work_path(@piece), class: "button" %>
     <%= link_to "Upvote", upvote_path(@piece), class: "button", method: :post %>
-    <%= link_to "Delete", media_path(@piece), class: "alert button", method: "delete", data: { confirm: "Are you sure?" } %>
+    <%= link_to "Delete", work_path(@piece), class: "alert button", method: "delete", data: { confirm: "Are you sure?" } %>
   </section>
 </article>
 

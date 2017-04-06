@@ -1,9 +1,11 @@
-class MediaController < ApplicationController
-  before_action :media_category
+class WorksController < ApplicationController
+  # before_action :media_category
   before_action :require_piece, except: [:index, :new, :create]
 
   def index
-    @media = Piece.where(category: @media_category).order(vote_count: :desc)
+    @media_category = params[:category]
+    @media = Piece.by_category(params[:category]).order(vote_count: :desc)
+    render :index
   end
 
   def new
@@ -79,8 +81,7 @@ private
 
   def require_piece
     @piece = Piece.find_by(id: params[:id])
+    @media_category = @piece.category.downcase.pluralize
     render_404 unless @piece
-
-    render_404 unless @piece.category == @media_category
   end
 end

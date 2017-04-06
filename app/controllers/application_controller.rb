@@ -63,16 +63,16 @@ class ApplicationController < ActionController::Base
   end
   helper_method :media_path
 
-  def upvote_path(piece)
-    if piece.category == "album"
-      upvote_album_path(piece)
-    elsif piece.category == "book"
-      upvote_book_path(piece)
-    elsif piece.category == "movie"
-      upvote_movie_path(piece)
-    end
-  end
-  helper_method :upvote_path
+  # def upvote_path(piece)
+  #   if piece.category == "album"
+  #     upvote_album_path(piece)
+  #   elsif piece.category == "book"
+  #     upvote_book_path(piece)
+  #   elsif piece.category == "movie"
+  #     upvote_movie_path(piece)
+  #   end
+  # end
+  # helper_method :upvote_path
 
   def render_404
     # DPR: supposedly this will actually render a 404 page in production
