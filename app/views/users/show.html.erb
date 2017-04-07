@@ -15,7 +15,7 @@
   <tbody>
     <% @user.votes.each do |vote| %>
       <tr>
-        <td><%= link_to vote.work.title, media_path(vote.work) %></td>
+        <td><%= link_to vote.work.title, work_path(vote.work) %></td>
         <td><%= vote.work.creator %></td>
         <td><%= vote.work.publication_year %></td>
         <td><%= vote.work.category.capitalize %></td>
