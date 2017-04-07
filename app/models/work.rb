@@ -33,6 +33,8 @@ class Work < ApplicationRecord
 
 private
   def fix_category
-    self.category = self.category.downcase.singularize
+    if self.category
+      self.category = self.category.downcase.singularize
+    end
   end
 end

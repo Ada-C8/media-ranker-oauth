@@ -1,2 +1,2 @@
-module MediaHelper
+module WorksHelper
 end

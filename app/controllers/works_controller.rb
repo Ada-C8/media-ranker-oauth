@@ -51,7 +51,7 @@ class WorksController < ApplicationController
   def destroy
     @work.destroy
     flash[:status] = :success
-    flash[:result_text] = "Successfully destroyed #{@media_category} #{@work.id}"
+    flash[:result_text] = "Successfully destroyed #{@media_category.singularize} #{@work.id}"
     redirect_to works_path(@media_category)
   end
 

@@ -4,7 +4,7 @@
   <p>Published: <%= @work.publication_year %></p>
   <p><%= @work.description %></p>
   <section>
-    <%= link_to "Back to #{@media_category} list", works_path(@media_category), class: "button" %>
+    <%= link_to "Back to #{@media_category.singularize} list", works_path(@media_category), class: "button" %>
     <%= link_to "Edit", edit_work_path(@work), class: "button" %>
     <%= link_to "Upvote", upvote_path(@work), class: "button", method: :post %>
     <%= link_to "Delete", work_path(@work), class: "alert button", method: "delete", data: { confirm: "Are you sure?" } %>
@@ -12,7 +12,7 @@
 </article>
 
 <article class="voting-users columns large-6 small-12">
-  <h3><%= @votes.count %> Votes for this <%= @media_category.capitalize %></h3>
+  <h3><%= @votes.count %> Votes for this <%= @media_category.capitalize.singularize %></h3>
   <table>
     <thead>
       <tr>
