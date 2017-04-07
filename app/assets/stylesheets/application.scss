@@ -15,6 +15,10 @@
 //= require_self
  */
 
+ body small {
+   color: slategrey;
+ }
+
  .page-header {
    max-width: 100%;
    background: image-url('owl.jpg');
@@ -23,9 +27,6 @@
    margin-bottom: 10px;
    h2 {
      padding-left: 150px;
-   }
-   small {
-     color: darkgrey;
    }
    p {
      margin-bottom: 5px;
@@ -46,4 +47,8 @@
  .top-ten ul {
    list-style-type: none;
    margin-left: 0px;
+ }
+
+ section.spotlight > div {
+   padding: 2rem;
  }

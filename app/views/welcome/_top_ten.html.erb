@@ -3,7 +3,10 @@
   <ul>
     <% data.each do |datum| %>
       <li>
-        <h4><%= link_to datum.title, work_path(datum) %></h4>
+        <h4>
+          <%= link_to datum.title, work_path(datum) %>
+          <small>by <%= datum.creator %></small>
+        </h4>
         <p><%= datum.vote_count %> votes</p>
       </li>
     <% end %>
