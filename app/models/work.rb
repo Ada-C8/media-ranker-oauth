@@ -8,6 +8,8 @@ class Work < ApplicationRecord
   validates :title, presence: true,
                     uniqueness: { scope: :category }
 
+  before_validation :fix_category
+
   def self.by_category(category)
     category = category.singularize.downcase
     self.where(category: category)
@@ -27,5 +29,10 @@ class Work < ApplicationRecord
 
   def self.top_ten(category)
     where(category: category).order(vote_count: :desc).limit(10)
+  end
+
+private
+  def fix_category
+    self.category = self.category.downcase.singularize
   end
 end

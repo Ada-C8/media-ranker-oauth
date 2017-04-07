@@ -1,10 +1,11 @@
 class WorksController < ApplicationController
-  # before_action :media_category
-  before_action :require_work, except: [:index, :new, :create]
+  # We should always be able to tell what category
+  # of work we're dealing with
+  before_action :category_from_url, only: [:index, :new, :create]
+  before_action :category_from_work, except: [:index, :new, :create]
 
   def index
-    @media_category = params[:category]
-    @media = Work.by_category(params[:category]).order(vote_count: :desc)
+    @media = Work.by_category(@media_category).order(vote_count: :desc)
     render :index
   end
 
@@ -13,15 +14,16 @@ class WorksController < ApplicationController
   end
 
   def create
-    work = Work.new(media_params)
-    if work.save
+    @work = Work.new(media_params)
+    if @work.save
       flash[:status] = :success
-      flash[:result_text] = "Successfully created #{@media_category} #{work.id}"
-      redirect_to media_path
+      flash[:result_text] = "Successfully created #{@media_category.singularize} #{@work.id}"
+      redirect_to works_path(@media_category)
     else
       flash[:status] = :failure
-      flash[:result_text] = "Could not create #{@media_category}"
-      flash[:messages] = work.errors.messages
+      flash[:result_text] = "Could not create #{@media_category.singularize}"
+      flash[:messages] = @work.errors.messages
+      render :new
     end
   end
 
@@ -36,12 +38,13 @@ class WorksController < ApplicationController
     @work.update_attributes(media_params)
     if @work.save
       flash[:status] = :success
-      flash[:result_text] = "Successfully updated #{@media_category} #{@work.id}"
-      redirect_to media_path
+      flash[:result_text] = "Successfully updated #{@media_category.singularize} #{@work.id}"
+      redirect_to works_path(@media_category)
     else
       flash[:status] = :failure
-      flash[:result_text] = "Could not update #{@media_category}"
+      flash[:result_text] = "Could not update #{@media_category.singularize}"
       flash[:messages] = @work.errors.messages
+      render :edit
     end
   end
 
@@ -49,7 +52,7 @@ class WorksController < ApplicationController
     @work.destroy
     flash[:status] = :success
     flash[:result_text] = "Successfully destroyed #{@media_category} #{@work.id}"
-    redirect_to media_path
+    redirect_to works_path(@media_category)
   end
 
   def upvote
@@ -71,7 +74,7 @@ class WorksController < ApplicationController
 
     # Refresh the page to show either the updated vote count
     # or the error message
-    redirect_back fallback_location: media_path
+    redirect_back fallback_location: works_path(@media_category)
   end
 
 private
@@ -79,9 +82,13 @@ private
     params.require(:work).permit(:title, :category, :creator, :description, :publication_year)
   end
 
-  def require_work
+  def category_from_url
+    @media_category = params[:category].downcase.pluralize
+  end
+
+  def category_from_work
     @work = Work.find_by(id: params[:id])
-    @media_category = @work.category.downcase.pluralize
     render_404 unless @work
+    @media_category = @work.category.downcase.pluralize
   end
 end

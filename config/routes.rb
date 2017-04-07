@@ -5,20 +5,15 @@ Rails.application.routes.draw do
   post '/login', to: 'welcome#login'
   get '/logout', to: 'welcome#logout', as: 'logout'
 
-  # get '/albums', to: 'works#albums', as: 'albums'
-  # get '/books', to: 'works#books', as: 'books'
-  # get '/movies', to: 'works#movies', as: 'movies'
+  # Build the category routes for albums, books and movies
+  category_constraints = { category: /(albums)|(books)|(movies)/}
+  get '/:category', to: 'works#index', as: 'works', constraints: category_constraints
+  get '/:category/new', to: 'works#new', as: 'new_work', constraints: category_constraints
+  post '/:category', to: 'works#create', constraints: category_constraints
 
-  get '/:category', to: 'works#index', as: 'works', constraints: { category: /(albums)|(books)|(movies)/}
-  resources :works, except: [:index]
+  # Specific works are just referenced by /work/:id
+  resources :works, except: [:index, :new, :create]
   post '/works/:id/upvote', to: 'works#upvote', as: 'upvote'
-
-  # resources :albums
-  # post '/albums/:id/upvote', to: 'albums#upvote', as: 'upvote_album'
-  # resources :books
-  # post '/books/:id/upvote', to: 'books#upvote', as: 'upvote_book'
-  # resources :movies
-  # post '/movies/:id/upvote', to: 'movies#upvote', as: 'upvote_movie'
 
   resources :users, only: [:index, :show]
 end

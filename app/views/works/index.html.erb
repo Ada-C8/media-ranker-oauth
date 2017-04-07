@@ -23,5 +23,5 @@
     </tbody>
   </table>
   <%= link_to "View all media", root_path, class: "button" %>
-  <%= link_to "Add a new #{@media_category.singularize}", new_work_path, class: "button" %>
+  <%= link_to "Add a new #{@media_category.singularize}", new_work_path(@media_category), class: "button" %>
 </section>

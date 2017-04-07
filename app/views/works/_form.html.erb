@@ -1,6 +1,6 @@
 <section>
-  <%= form_for @work, url: work_path(@work) do |f| %>
-    <%= f.hidden_field :category, value: @media_category %>
+  <%= form_for @work do |f| %>
+    <%= f.hidden_field :category, value: @work.category %>
 
     <%= f.label :title %>
     <%= f.text_field :title %>
