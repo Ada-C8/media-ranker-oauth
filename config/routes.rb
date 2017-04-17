@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'welcome#index'
+  root 'works#root'
   get '/login', to: 'sessions#login_form', as: 'login'
   post '/login', to: 'sessions#login'
   post '/logout', to: 'sessions#logout', as: 'logout'

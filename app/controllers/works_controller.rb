@@ -2,7 +2,14 @@ class WorksController < ApplicationController
   # We should always be able to tell what category
   # of work we're dealing with
   before_action :category_from_url, only: [:index, :new, :create]
-  before_action :category_from_work, except: [:index, :new, :create]
+  before_action :category_from_work, except: [:root, :index, :new, :create]
+
+  def root
+    @albums = Work.best_albums
+    @books = Work.best_books
+    @movies = Work.best_movies
+    @best_work = Work.order(vote_count: :desc).first
+  end
 
   def index
     @media = Work.by_category(@media_category).order(vote_count: :desc)
