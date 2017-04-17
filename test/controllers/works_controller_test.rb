@@ -20,7 +20,7 @@ describe WorksController do
       end
     end
 
-    # TODO DPR: I haven't yet found a good way to test rails route constraints.
+    # TODO DPR: I've yet to find a good way to test rails route constraints.
     # Whenever I attempt the test below, I get a routing exception instead of
     # a 404, even though in production a 404 is indeed rendered.
     it "renders not_found for bogus categories" do
@@ -35,9 +35,58 @@ describe WorksController do
   end
 
   describe "new" do
+    it "succeeds for a real category" do
+      CATEGORIES.each do |category|
+        get new_work_path(category)
+        must_respond_with :success
+      end
+    end
+
+    it "renders not_found for bogus categories" do
+      skip
+    end
   end
 
   describe "create" do
+    it "creates a work with valid data for a real category" do
+      work_data = {
+        work: {
+          title: "test work"
+        }
+      }
+      CATEGORIES.each do |category|
+        work_data[:work][:category] = category
+
+        start_count = Work.count
+
+        post works_path(category), params: work_data
+        must_redirect_to works_path(category)
+
+        Work.count.must_equal start_count + 1
+      end
+    end
+
+    it "renders bad_request and does not update the DB for bogus data" do
+      work_data = {
+        work: {
+          title: ""
+        }
+      }
+      CATEGORIES.each do |category|
+        work_data[:work][:category] = category
+
+        start_count = Work.count
+
+        post works_path(category), params: work_data
+        must_respond_with :bad_request
+
+        Work.count.must_equal start_count
+      end
+    end
+
+    it "renders not_found for bogus categories" do
+      skip
+    end
   end
 
   describe "show" do

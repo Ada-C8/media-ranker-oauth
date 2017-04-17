@@ -23,7 +23,7 @@ class WorksController < ApplicationController
       flash[:status] = :failure
       flash[:result_text] = "Could not create #{@media_category.singularize}"
       flash[:messages] = @work.errors.messages
-      render :new
+      render :new, status: :bad_request
     end
   end
 
