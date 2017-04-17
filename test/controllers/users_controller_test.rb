@@ -26,7 +26,7 @@ describe UsersController do
       must_respond_with :success
     end
 
-    it "renders 404 for a bogus user" do
+    it "renders 404 not_found for a bogus user" do
       # User.last gives the user with the highest ID
       bogus_user_id = User.last.id + 1
       get user_path(bogus_user_id)

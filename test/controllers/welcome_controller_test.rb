@@ -63,7 +63,7 @@ describe WelcomeController do
       must_redirect_to root_path
     end
 
-    it "renders bad_request if the username is blank" do
+    it "renders 400 bad_request if the username is blank" do
       post login_path, params: { username: "" }
       must_respond_with :bad_request
     end
