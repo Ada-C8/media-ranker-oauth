@@ -17,12 +17,15 @@ describe WorksController do
       %w(album book).each do |category|
         Work.by_category(category).length.must_be :>, 0, "No #{category.pluralize} in the test fixtures"
       end
+
+      # Remove all movies
+      Work.by_category("movie").destroy_all
+
+      get root_path
+      must_respond_with :success
     end
 
-    # Remove all movies
-    Work.by_category("movie").destroy_all
-
-    it "succeeds with no medai" do
+    it "succeeds with no media" do
       Work.destroy_all
       get root_path
       must_respond_with :success
