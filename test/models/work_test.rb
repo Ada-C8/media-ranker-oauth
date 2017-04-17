@@ -28,6 +28,15 @@ describe Work do
       end
     end
 
+    it "fixes almost-valid categories" do
+      categories = ['Album', 'albums', 'ALBUMS', 'books', 'mOvIeS']
+      categories.each do |category|
+        work = Work.new(title: "test", category: category)
+        work.valid?.must_equal true
+        work.category.must_equal category.singularize.downcase
+      end
+    end
+
     it "rejects invalid categories" do
       invalid_categories = ['cat', 'dog', 'phd thesis', 1337, nil]
       invalid_categories.each do |category|
@@ -92,6 +101,7 @@ describe Work do
       end
 
       # Create media to vote upon
+      Work.where(category: "movie").destroy_all
       8.times do |i|
         work = Work.create!(category: "movie", title: "test movie #{i}")
         vote_count = rand(test_users.length)
