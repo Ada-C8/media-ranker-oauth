@@ -81,9 +81,17 @@ describe WelcomeController do
 
   describe "logout" do
     it "succeeds if the user is logged in" do
+      # Gotta be logged in first
+      post login_path, params: { username: "test user" }
+      must_redirect_to root_path
+
+      post logout_path
+      must_redirect_to root_path
     end
 
     it "succeeds if the user is not logged in" do
+      post logout_path
+      must_redirect_to root_path
     end
   end
 end

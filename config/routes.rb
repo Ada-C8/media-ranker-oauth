@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root 'welcome#index'
   get '/login', to: 'welcome#login_form', as: 'login'
   post '/login', to: 'welcome#login'
-  get '/logout', to: 'welcome#logout', as: 'logout'
+  post '/logout', to: 'welcome#logout', as: 'logout'
 
   # Build the category routes for albums, books and movies
   category_constraints = { category: /(albums)|(books)|(movies)/}
