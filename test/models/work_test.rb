@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class WorkTest < ActiveSupport::TestCase
+describe Work do
   describe "relations" do
     it "has a list of votes" do
        thrill = works(:thrill)

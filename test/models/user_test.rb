@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserTest < ActiveSupport::TestCase
+describe User do
   describe "relations" do
     it "has a list of votes" do
       dan = users(:dan)
