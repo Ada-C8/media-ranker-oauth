@@ -2,7 +2,14 @@ class WorksController < ApplicationController
   # We should always be able to tell what category
   # of work we're dealing with
   before_action :category_from_url, only: [:index, :new, :create]
-  before_action :category_from_work, except: [:index, :new, :create]
+  before_action :category_from_work, except: [:root, :index, :new, :create]
+
+  def root
+    @albums = Work.best_albums
+    @books = Work.best_books
+    @movies = Work.best_movies
+    @best_work = Work.order(vote_count: :desc).first
+  end
 
   def index
     @media = Work.by_category(@media_category).order(vote_count: :desc)
@@ -23,7 +30,7 @@ class WorksController < ApplicationController
       flash[:status] = :failure
       flash[:result_text] = "Could not create #{@media_category.singularize}"
       flash[:messages] = @work.errors.messages
-      render :new
+      render :new, status: :bad_request
     end
   end
 
@@ -41,10 +48,10 @@ class WorksController < ApplicationController
       flash[:result_text] = "Successfully updated #{@media_category.singularize} #{@work.id}"
       redirect_to works_path(@media_category)
     else
-      flash[:status] = :failure
-      flash[:result_text] = "Could not update #{@media_category.singularize}"
-      flash[:messages] = @work.errors.messages
-      render :edit
+      flash.now[:status] = :failure
+      flash.now[:result_text] = "Could not update #{@media_category.singularize}"
+      flash.now[:messages] = @work.errors.messages
+      render :edit, status: :not_found
     end
   end
 
@@ -52,29 +59,34 @@ class WorksController < ApplicationController
     @work.destroy
     flash[:status] = :success
     flash[:result_text] = "Successfully destroyed #{@media_category.singularize} #{@work.id}"
-    redirect_to works_path(@media_category)
+    redirect_to root_path
   end
 
   def upvote
     # Most of these varied paths end in failure
     # Something tragically beautiful about the whole thing
+    # For status codes, see
+    # http://stackoverflow.com/questions/3825990/http-response-code-for-post-when-resource-already-exists
     flash[:status] = :failure
     if @login_user
       vote = Vote.new(user: @login_user, work: @work)
       if vote.save
         flash[:status] = :success
         flash[:result_text] = "Successfully upvoted!"
+        status = :found
       else
         flash[:result_text] = "Could not upvote"
         flash[:messages] = vote.errors.messages
+        status = :conflict
       end
     else
       flash[:result_text] = "You must log in to do that"
+      status = :unauthorized
     end
 
     # Refresh the page to show either the updated vote count
     # or the error message
-    redirect_back fallback_location: works_path(@media_category)
+    redirect_back fallback_location: works_path(@media_category), status: status
   end
 
 private

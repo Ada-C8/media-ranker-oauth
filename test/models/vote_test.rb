@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class VoteTest < ActiveSupport::TestCase
+describe Vote do
   describe "relations" do
     it "has a user" do
       v = votes(:one)

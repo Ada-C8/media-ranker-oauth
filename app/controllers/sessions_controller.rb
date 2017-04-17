@@ -1,11 +1,4 @@
-class WelcomeController < ApplicationController
-  def index
-    @albums = Work.best_albums
-    @books = Work.best_books
-    @movies = Work.best_movies
-    @best_work = Work.order(vote_count: :desc).first
-  end
-
+class SessionsController < ApplicationController
   def login_form
   end
 
@@ -22,9 +15,11 @@ class WelcomeController < ApplicationController
         flash[:status] = :success
         flash[:result_text] = "Successfully created new user #{user.username} with ID #{user.id}"
       else
-        flash[:status] = :failure
-        flash[:result_text] = "Could not log in"
-        flash[:messages] = user.errors.messages
+        flash.now[:status] = :failure
+        flash.now[:result_text] = "Could not log in"
+        flash.now[:messages] = user.errors.messages
+        render "login_form", status: :bad_request
+        return
       end
     end
     redirect_to root_path
