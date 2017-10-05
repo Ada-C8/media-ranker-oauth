@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # post '/:category', to: 'works#create', constraints: category_constraints
 
   # Specific works are just referenced by /work/:id
-  resources :works, except: [:index ] #, :new, :create]
+  resources :works
   post '/works/:id/upvote', to: 'works#upvote', as: 'upvote'
 
   resources :users, only: [:index, :show]

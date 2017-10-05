@@ -1,9 +1,10 @@
 class Work < ApplicationRecord
+  CATEGORIES = %w(album book movie)
   has_many :votes, dependent: :destroy
   has_many :ranking_users, through: :votes, source: :user
 
   validates :category,  presence: true,
-                        inclusion: { in: %w(album book movie) }
+                        inclusion: { in: CATEGORIES }
 
   validates :title, presence: true,
                     uniqueness: { scope: :category }
@@ -12,6 +13,14 @@ class Work < ApplicationRecord
   # We want to fixup the category *before* we validate, because
   # our validations are rather strict about what's OK.
   before_validation :fix_category
+
+  def self.to_category_hash
+    data = {}
+    CATEGORIES.each do |cat|
+      data[cat] = by_category(cat)
+    end
+    return data
+  end
 
   def self.by_category(category)
     category = category.singularize.downcase
