@@ -24,7 +24,7 @@ class WorksController < ApplicationController
     if @work.save
       flash[:status] = :success
       flash[:result_text] = "Successfully created #{@media_category.singularize} #{@work.id}"
-      redirect_to root_path
+      redirect_to work_path(@work)
     else
       flash[:status] = :failure
       flash[:result_text] = "Could not create #{@media_category.singularize}"
