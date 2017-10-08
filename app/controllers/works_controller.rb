@@ -1,7 +1,6 @@
 class WorksController < ApplicationController
   # We should always be able to tell what category
   # of work we're dealing with
-  before_action :category_from_url, only: [:index, :new, :create]
   before_action :category_from_work, except: [:root, :index, :new, :create]
 
   def root
@@ -12,20 +11,20 @@ class WorksController < ApplicationController
   end
 
   def index
-    @media = Work.by_category(@media_category).order(vote_count: :desc)
-    render :index
+    @works_by_category = Work.to_category_hash
   end
 
   def new
-    @work = Work.new(category: @media_category)
+    @work = Work.new
   end
 
   def create
     @work = Work.new(media_params)
+    @media_category = @work.category
     if @work.save
       flash[:status] = :success
       flash[:result_text] = "Successfully created #{@media_category.singularize} #{@work.id}"
-      redirect_to works_path(@media_category)
+      redirect_to work_path(@work)
     else
       flash[:status] = :failure
       flash[:result_text] = "Could not create #{@media_category.singularize}"
@@ -46,7 +45,7 @@ class WorksController < ApplicationController
     if @work.save
       flash[:status] = :success
       flash[:result_text] = "Successfully updated #{@media_category.singularize} #{@work.id}"
-      redirect_to works_path(@media_category)
+      redirect_to work_path(@work)
     else
       flash.now[:status] = :failure
       flash.now[:result_text] = "Could not update #{@media_category.singularize}"
@@ -86,16 +85,12 @@ class WorksController < ApplicationController
 
     # Refresh the page to show either the updated vote count
     # or the error message
-    redirect_back fallback_location: works_path(@media_category), status: status
+    redirect_back fallback_location: work_path(@work), status: status
   end
 
 private
   def media_params
     params.require(:work).permit(:title, :category, :creator, :description, :publication_year)
-  end
-
-  def category_from_url
-    @media_category = params[:category].downcase.pluralize
   end
 
   def category_from_work

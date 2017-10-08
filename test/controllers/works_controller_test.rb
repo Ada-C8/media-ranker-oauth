@@ -36,46 +36,23 @@ describe WorksController do
   INVALID_CATEGORIES = ["nope", "42", "", "  ", "albumstrailingtext"]
 
   describe "index" do
-    it "succeeds for a real category with many media" do
-      CATEGORIES.each do |category|
-        Work.by_category(category).count.must_be :>, 0, "No #{category.pluralize} in the test fixtures"
-        get works_path(category)
-        must_respond_with :success
-      end
+    it "succeeds when there are works" do
+      Work.count.must_be :>, 0, "No works in the test fixtures"
+      get works_path
+      must_respond_with :success
     end
 
-    it "succeeds for a real category with no media" do
+    it "succeeds when there are no works" do
       Work.destroy_all
-      CATEGORIES.each do |category|
-        get works_path(category)
-        must_respond_with :success
-      end
-    end
-
-    # TODO DPR: I've yet to find a good way to test rails route constraints.
-    # Whenever I attempt the test below, I get a routing exception instead of
-    # a 404, even though in production a 404 is indeed rendered.
-    it "renders 404 not_found for bogus categories" do
-      skip
-      INVALID_CATEGORIES.each do |category|
-        # Can't use a named route here b/c the route helpers are smart
-        # enough to fail before we even get to the request
-        get "/#{category}"
-        must_respond_with :not_found
-      end
+      get works_path
+      must_respond_with :success
     end
   end
 
   describe "new" do
-    it "succeeds for a real category" do
-      CATEGORIES.each do |category|
-        get new_work_path(category)
-        must_respond_with :success
-      end
-    end
-
-    it "renders 404 not_found for bogus categories" do
-      skip
+    it "works" do
+      get new_work_path
+      must_respond_with :success
     end
   end
 
@@ -92,7 +69,7 @@ describe WorksController do
         start_count = Work.count
 
         post works_path(category), params: work_data
-        must_redirect_to works_path(category)
+        must_redirect_to work_path(Work.last)
 
         Work.count.must_equal start_count + 1
       end
@@ -116,8 +93,22 @@ describe WorksController do
       end
     end
 
-    it "renders 404 not_found for bogus categories" do
-      skip
+    it "renders 400 bad_request for bogus categories" do
+      work_data = {
+        work: {
+          title: "test work"
+        }
+      }
+      INVALID_CATEGORIES.each do |category|
+        work_data[:work][:category] = category
+
+        start_count = Work.count
+
+        post works_path(category), params: work_data
+        must_respond_with :bad_request
+
+        Work.count.must_equal start_count
+      end
     end
   end
 
@@ -157,7 +148,7 @@ describe WorksController do
       }
 
       patch work_path(work), params: work_data
-      must_redirect_to works_path(work.category.pluralize)
+      must_redirect_to work_path(work)
 
       # Verify the DB was really modified
       Work.find(work.id).title.must_equal work_data[:work][:title]

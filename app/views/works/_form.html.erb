@@ -1,6 +1,7 @@
 <section>
   <%= form_for @work do |f| %>
-    <%= f.hidden_field :category, value: @work.category %>
+    <%= f.label :category %>
+    <%= f.select :category, Work::CATEGORIES %>
 
     <%= f.label :title %>
     <%= f.text_field :title %>

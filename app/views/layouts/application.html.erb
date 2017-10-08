@@ -11,21 +11,25 @@
 
 <body>
   <header class="page-header row">
-    <h2 class="columns large-9 small-12">
+    <h2 class="columns small-12">
       <%= link_to "Media Ranker", root_path %>
       <small>Ranking the Best of Everything</small>
     </h2>
 
-    <!-- TODO DPR: this looks really silly when the screen size is small -->
-    <div class="columns large-3 small-12">
-      <% if @login_user %>
-        <p class="text-right">Logged in as <%= link_to @login_user.username, user_path(@login_user) %></p>
-        <%= link_to "Log Out", logout_path, method: :post, class: "button float-right" %>
-      <% else %>
-        <p class="text-right">Not logged in</p>
-        <%= link_to "Log In", login_path, class: "button float-right" %>
-      <% end %>
-    </div>
+    <nav class="columns small-12">
+      <%= link_to "View top media", root_path, class: "button" %>
+      <%= link_to "View all media", works_path, class: "button" %>
+      <%= link_to "Add a new work", new_work_path, class: "button" %>
+      <%= link_to "View all users", users_path, class: "button" %>
+      <div class="float-right">
+        <% if @login_user %>
+          <%= link_to "Logged in as #{@login_user.username}", user_path(@login_user), class: "button" %>
+          <%= link_to "Log Out", logout_path, method: :post, class: "button" %>
+        <% else %>
+          <%= link_to "Log In", login_path, class: "button float-right" %>
+        <% end %>
+      </div>
+    </nav>
   </header>
 
   <% if flash[:result_text] or flash[:messages] %>
